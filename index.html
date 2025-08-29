@@ -1,0 +1,2844 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البرنامج الإحصائي الشامل</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.0/lib/browser/math.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container-fluid {
+            padding: 20px;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            border: none;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            padding: 15px 20px;
+            border-radius: 15px 15px 0 0 !important;
+        }
+        .card-body {
+            padding: 25px;
+        }
+        h1, h2, h3 {
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .nav-tabs .nav-link {
+            border: none;
+            border-radius: 10px;
+            margin: 0 5px;
+            color: #666;
+            font-weight: 500;
+        }
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #555;
+        }
+        .result-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .tab-content {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .accordion-button {
+            font-weight: 600;
+            color: #555;
+        }
+        .accordion-button:not(.collapsed) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            box-shadow: none;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            font-weight: 500;
+            margin-top: 30px;
+        }
+        .math-formula, .r-code {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-right: 4px solid #4facfe;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            direction: ltr;
+            text-align: left;
+        }
+        .example-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            border-radius: 0 10px 10px 0;
+            margin: 15px 0;
+            font-style: italic;
+        }
+        .table-responsive {
+            margin-top: 20px;
+        }
+        .table {
+            background-color: #f8f9fa;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .printable, .printable * {
+                visibility: visible;
+            }
+            .printable {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .card-header, .btn, .accordion-button, footer, .nav-pills {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-center mb-4">
+                <h1><i class="bi bi-bar-chart"></i> البرنامج الإحصائي الشامل</h1>
+                <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem;">أداة متكاملة للتحليل الإحصائي والرسوم البيانية</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-list"></i> القوائم الرئيسية
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-pills flex-column" id="mainTabs">
+                            <li class="nav-item mb-2">
+                                <a class="nav-link active" data-bs-toggle="pill" href="#centralTendency">
+                                    <i class="bi bi-calculator"></i> مقاييس النزعة المركزية
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link" data-bs-toggle="pill" href="#dispersion">
+                                    <i class="bi bi-scatter-chart"></i> مقاييس التشتت
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link" data-bs-toggle="pill" href="#spearman">
+                                    <i class="bi bi-bar-chart-steps"></i> طريقة سبيرمان
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link" data-bs-toggle="pill" href="#pearson">
+                                    <i class="bi bi-bar-chart-fill"></i> طريقة بيرسون
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link" data-bs-toggle="pill" href="#relativeFrequency">
+                                    <i class="bi bi-percent"></i> التكرار النسبي التراكمي
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link" data-bs-toggle="pill" href="#dataType">
+                                    <i class="bi bi-list-columns"></i> البيانات الكمية والنوعية
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link" data-bs-toggle="pill" href="#sampling">
+                                    <i class="bi bi-people"></i> العينة والعينات العشوائية
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link" data-bs-toggle="pill" href="#paramstat">
+                                    <i class="bi bi-person-fill"></i> المعلمة والإحصائية
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link" data-bs-toggle="pill" href="#discreteDist">
+                                    <i class="bi bi-graph-up-arrow"></i> التوزيع الاحتمالي المنفصل
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link" data-bs-toggle="pill" href="#continuousDist">
+                                    <i class="bi bi-graph-up"></i> التوزيع الاحتمالي المتصل
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link" data-bs-toggle="pill" href="#bernoulli">
+                                    <i class="bi bi-dice-1"></i> التوزيع البرنولي
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link" data-bs-toggle="pill" href="#poisson">
+                                    <i class="bi bi-dice-2"></i> توزيع بواسون
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link" data-bs-toggle="pill" href="#normal">
+                                    <i class="bi bi-dice-3"></i> التوزيع الطبيعي
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link" data-bs-toggle="pill" href="#binomial">
+                                    <i class="bi bi-dice-4"></i> التوزيع الثنائي
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link" data-bs-toggle="pill" href="#exponential">
+                                    <i class="bi bi-dice-5"></i> التوزيع الأسي
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active printable" id="centralTendency">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-calculator"></i> مقاييس النزعة المركزية
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> <strong>النزعة المركزية:</strong> تمثل القيمة التي تتمركز حولها البيانات
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">أدخل البيانات (افصل بين القيم بفواصل):</label>
+                                    <textarea class="form-control" id="dataInput" rows="3" placeholder="مثال: 10, 15, 12, 18, 20, 14, 16">10, 15, 12, 18, 20, 14, 16</textarea>
+                                </div>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary" onclick="calculateCentralTendency()">
+                                        <i class="bi bi-calculator"></i> احسب المقاييس
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="generateRandomData()">
+                                        <i class="bi bi-shuffle"></i> توليد مثال عشوائي
+                                    </button>
+                                    <button class="btn btn-info text-white ms-auto" onclick="window.print()">
+                                        <i class="bi bi-printer"></i> طباعة
+                                    </button>
+                                </div>
+                                <div id="centralResults" class="mt-4"></div>
+                                <div class="chart-container">
+                                    <canvas id="centralChart"></canvas>
+                                </div>
+                                <div class="accordion mt-4" id="centralFormulas">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formulas1">
+                                                <i class="bi bi-book"></i> الصيغ المستخدمة
+                                            </button>
+                                        </h2>
+                                        <div id="formulas1" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="math-formula">
+                                                    الوسط الحسابي (Mean): x̄ = Σx / n
+                                                </div>
+                                                <div class="math-formula">
+                                                    الوسيط (Median): القيمة الوسطى عند ترتيب البيانات
+                                                </div>
+                                                <div class="math-formula">
+                                                    المنوال (Mode): القيمة الأكثر تكراراً
+                                                </div>
+                                                <div class="example-box">
+                                                    مثال: البيانات [10, 15, 12, 18, 20, 14, 16]<br>
+                                                    الوسط = 15, الوسيط = 15, لا يوجد منوال
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rCode1">
+                                                <i class="bi bi-filetype-r"></i> كود R
+                                            </button>
+                                        </h2>
+                                        <div id="rCode1" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="r-code">
+                                                    <pre>
+data <- c(10, 15, 12, 18, 20, 14, 16)
+mean_value <- mean(data)
+median_value <- median(data)
+mode_value <- as.numeric(names(sort(table(data), decreasing=TRUE)[1]))
+print(paste("Mean:", mean_value))
+print(paste("Median:", median_value))
+print(paste("Mode:", mode_value))
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade printable" id="dispersion">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-scatter-chart"></i> مقاييس التشتت
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> <strong>مقاييس التشتت:</strong> هي المقاييس التي تحدد مدى تباعد البيانات وتفرقها عن مركزها أو عن بعضها البعض. كلما كانت قيمة المقياس أصغر، كانت البيانات أكثر تجانسًا وتقاربًا.
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">أدخل البيانات (افصل بين القيم بفواصل):</label>
+                                    <textarea class="form-control" id="dispersionData" rows="3" placeholder="مثال: 10, 15, 12, 18, 20, 14, 16">10, 15, 12, 18, 20, 14, 16</textarea>
+                                </div>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary" onclick="calculateDispersion()">
+                                        <i class="bi bi-calculator"></i> احسب مقاييس التشتت
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="generateRandomDispersionData()">
+                                        <i class="bi bi-shuffle"></i> توليد مثال عشوائي
+                                    </button>
+                                    <button class="btn btn-info text-white ms-auto" onclick="window.print()">
+                                        <i class="bi bi-printer"></i> طباعة
+                                    </button>
+                                </div>
+                                <div id="dispersionResults" class="mt-4"></div>
+                                <div class="chart-container">
+                                    <canvas id="dispersionChart"></canvas>
+                                </div>
+                                <div class="accordion mt-4" id="dispersionFormulas">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formulas2">
+                                                <i class="bi bi-book"></i> الصيغ المستخدمة
+                                            </button>
+                                        </h2>
+                                        <div id="formulas2" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="math-formula">
+                                                    المدى (Range): القيمة العظمى - القيمة الصغرى
+                                                </div>
+                                                <div class="math-formula">
+                                                    التباين (Variance): σ² = Σ(x - x̄)² / n
+                                                </div>
+                                                <div class="math-formula">
+                                                    الانحراف المعياري (Standard Deviation): σ = √σ²
+                                                </div>
+                                                <div class="math-formula">
+                                                    المعامل التبايني (Coefficient of Variation): (σ / x̄) × 100%
+                                                </div>
+                                                <div class="example-box">
+                                                    مثال: البيانات [10, 15, 12, 18, 20, 14, 16]<br>
+                                                    المدى = 10, التباين ≈ 12.57, الانحراف المعياري ≈ 3.55
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rCode2">
+                                                <i class="bi bi-filetype-r"></i> كود R
+                                            </button>
+                                        </h2>
+                                        <div id="rCode2" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="r-code">
+                                                    <pre>
+data <- c(10, 15, 12, 18, 20, 14, 16)
+range_value <- max(data) - min(data)
+variance_value <- var(data)
+sd_value <- sd(data)
+mean_value <- mean(data)
+cv_value <- (sd_value / mean_value) * 100
+print(paste("Range:", range_value))
+print(paste("Variance:", variance_value))
+print(paste("Standard Deviation:", sd_value))
+print(paste("Coefficient of Variation:", cv_value))
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade printable" id="spearman">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-bar-chart-steps"></i> طريقة سبيرمان
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> <strong>معامل ارتباط سبيرمان (ρ):</strong> يقيس قوة واتجاه العلاقة بين متغيرين باستخدام رتب البيانات، وهو مناسب للبيانات الترتيبية. تتراوح قيمته بين -1 و +1.
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">أدخل بيانات المتغير X (افصل بفواصل):</label>
+                                    <textarea class="form-control" id="spearmanXData" rows="2" placeholder="مثال: 10, 12, 15, 18, 20">10, 12, 15, 18, 20</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">أدخل بيانات المتغير Y (افصل بفواصل):</label>
+                                    <textarea class="form-control" id="spearmanYData" rows="2" placeholder="مثال: 5, 8, 11, 14, 17">5, 8, 11, 14, 17</textarea>
+                                </div>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary" onclick="calculateSpearman()">
+                                        <i class="bi bi-calculator"></i> احسب معامل سبيرمان
+                                    </button>
+                                    <button class="btn btn-info text-white ms-auto" onclick="window.print()">
+                                        <i class="bi bi-printer"></i> طباعة
+                                    </button>
+                                </div>
+                                <div id="spearmanResults" class="mt-4"></div>
+                                <div class="chart-container">
+                                    <canvas id="spearmanChart"></canvas>
+                                </div>
+                                <div class="accordion mt-4" id="spearmanFormulas">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formulasSpearman">
+                                                <i class="bi bi-book"></i> الصيغة المستخدمة
+                                            </button>
+                                        </h2>
+                                        <div id="formulasSpearman" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="math-formula">
+                                                    ρ = 1 - (6 * Σd²) / (n * (n² - 1))
+                                                </div>
+                                                <p>حيث:</p>
+                                                <ul>
+                                                    <li><strong>ρ</strong>: معامل ارتباط سبيرمان.</li>
+                                                    <li><strong>d</strong>: الفرق بين رتبتي المتغيرين X و Y لكل قيمة.</li>
+                                                    <li><strong>n</strong>: عدد أزواج البيانات.</li>
+                                                </ul>
+                                                <div class="example-box">
+                                                    مثال: X = [10, 12, 15, 18, 20], Y = [5, 8, 11, 14, 17]<br>
+                                                    سيتم حساب الرتب لكل متغير، ثم الفرق بين الرتب، ثم تطبيق الصيغة.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade printable" id="pearson">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-bar-chart-fill"></i> طريقة بيرسون
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> <strong>معامل ارتباط بيرسون (r):</strong> يقيس قوة واتجاه العلاقة الخطية بين متغيرين كميين. تتراوح قيمته بين -1 و +1.
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">أدخل بيانات المتغير X (افصل بفواصل):</label>
+                                    <textarea class="form-control" id="pearsonXData" rows="2" placeholder="مثال: 1, 2, 3, 4, 5">1, 2, 3, 4, 5</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">أدخل بيانات المتغير Y (افصل بفواصل):</label>
+                                    <textarea class="form-control" id="pearsonYData" rows="2" placeholder="مثال: 2, 4, 5, 4, 6">2, 4, 5, 4, 6</textarea>
+                                </div>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary" onclick="calculatePearson()">
+                                        <i class="bi bi-calculator"></i> احسب معامل بيرسون
+                                    </button>
+                                    <button class="btn btn-info text-white ms-auto" onclick="window.print()">
+                                        <i class="bi bi-printer"></i> طباعة
+                                    </button>
+                                </div>
+                                <div id="pearsonResults" class="mt-4"></div>
+                                <div class="chart-container">
+                                    <canvas id="pearsonChart"></canvas>
+                                </div>
+                                <div class="accordion mt-4" id="pearsonFormulas">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formulasPearson">
+                                                <i class="bi bi-book"></i> الصيغة المستخدمة
+                                            </button>
+                                        </h2>
+                                        <div id="formulasPearson" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="math-formula">
+                                                    r = (nΣXY - ΣXΣY) / √[(nΣX² - (ΣX)²) * (nΣY² - (ΣY)²)]
+                                                </div>
+                                                <p>حيث:</p>
+                                                <ul>
+                                                    <li><strong>r</strong>: معامل ارتباط بيرسون.</li>
+                                                    <li><strong>n</strong>: عدد أزواج البيانات.</li>
+                                                    <li><strong>X, Y</strong>: قيم البيانات.</li>
+                                                </ul>
+                                                <div class="example-box">
+                                                    مثال: X = [1, 2, 3, 4, 5], Y = [2, 4, 5, 4, 6]<br>
+                                                    سيتم حساب المجاميع اللازمة ثم تطبيق الصيغة لحساب المعامل.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade printable" id="relativeFrequency">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-percent"></i> التكرار النسبي التراكمي
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> <strong>التكرار النسبي التراكمي:</strong> يمثل نسبة تكرار قيمة ما وجميع القيم التي تقل عنها
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">أدخل البيانات (افصل بين القيم بفواصل):</label>
+                                    <textarea class="form-control" id="freqData" rows="3" placeholder="مثال: 1, 2, 2, 3, 3, 3, 4, 4, 5">1, 2, 2, 3, 3, 3, 4, 4, 5</textarea>
+                                </div>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary" onclick="calculateRelativeFrequency()">
+                                        <i class="bi bi-calculator"></i> احسب التكرار
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="generateRandomFreqData()">
+                                        <i class="bi bi-shuffle"></i> توليد مثال عشوائي
+                                    </button>
+                                    <button class="btn btn-info text-white ms-auto" onclick="window.print()">
+                                        <i class="bi bi-printer"></i> طباعة
+                                    </button>
+                                </div>
+                                <div id="freqResults" class="mt-4 table-responsive"></div>
+                                <div class="chart-container">
+                                    <canvas id="freqChart"></canvas>
+                                </div>
+                                <div class="accordion mt-4" id="freqFormulas">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formulasFreq">
+                                                <i class="bi bi-book"></i> الصيغ المستخدمة
+                                            </button>
+                                        </h2>
+                                        <div id="formulasFreq" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="math-formula">
+                                                    التكرار النسبي = تكرار القيمة / إجمالي عدد القيم
+                                                </div>
+                                                <div class="math-formula">
+                                                    التكرار النسبي التراكمي = مجموع التكرار النسبي للقيم السابقة + التكرار النسبي للقيمة الحالية
+                                                </div>
+                                                <div class="example-box">
+                                                    مثال: البيانات [1, 2, 2, 3, 3, 3]<br>
+                                                    القيمة 2 تكررت مرتين. التكرار النسبي = 2/6.
+                                                    التكرار النسبي التراكمي للقيمة 2 = (تكرار 1/6) + (تكرار 2/6)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rCodeFreq">
+                                                <i class="bi bi-filetype-r"></i> كود R
+                                            </button>
+                                        </h2>
+                                        <div id="rCodeFreq" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="r-code">
+                                                    <pre>
+data <- c(1, 2, 2, 3, 3, 3, 4, 4, 5)
+freq_table <- table(data)
+rel_freq <- prop.table(freq_table)
+cum_rel_freq <- cumsum(rel_freq)
+print("Cumulative Relative Frequency:")
+print(cum_rel_freq)
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade printable" id="dataType">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-list-columns"></i> البيانات الكمية والنوعية
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> <strong>البيانات الكمية:</strong> هي بيانات عددية قابلة للقياس. <strong>البيانات النوعية:</strong> هي بيانات وصفية وغير عددية.
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">أدخل بيانات مختلطة (افصل بفواصل):</label>
+                                    <textarea class="form-control" id="dataTypeInput" rows="3" placeholder="مثال: 25, ذكر, 175.5, أنثى, 82.3, ذكر">25, ذكر, 175.5, أنثى, 82.3, ذكر</textarea>
+                                </div>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary" onclick="analyzeDataType()">
+                                        <i class="bi bi-search"></i> تحليل البيانات
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="generateRandomDataType()">
+                                        <i class="bi bi-shuffle"></i> توليد مثال عشوائي
+                                    </button>
+                                    <button class="btn btn-info text-white ms-auto" onclick="window.print()">
+                                        <i class="bi bi-printer"></i> طباعة
+                                    </button>
+                                </div>
+                                <div id="dataTypeResults" class="mt-4"></div>
+                                <div class="chart-container">
+                                    <canvas id="dataTypeChart"></canvas>
+                                </div>
+                                <div class="accordion mt-4" id="dataTypeFormulas">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formulasDataType">
+                                                <i class="bi bi-book"></i> شرح وأنواع
+                                            </button>
+                                        </h2>
+                                        <div id="formulasDataType" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="example-box">
+                                                    <strong>البيانات الكمية (Quantitative):</strong>
+                                                    <ul>
+                                                        <li><strong>منفصلة (Discrete):</strong> قيم محددة وثابتة (مثل: عدد الطلاب، عدد السيارات).</li>
+                                                        <li><strong>متصلة (Continuous):</strong> قيم ضمن نطاق معين (مثل: الطول، الوزن، درجة الحرارة).</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="example-box">
+                                                    <strong>البيانات النوعية (Qualitative):</strong>
+                                                    <ul>
+                                                        <li><strong>اسمية (Nominal):</strong> قيم لا يمكن ترتيبها (مثل: الجنس، لون العين).</li>
+                                                        <li><strong>ترتيبية (Ordinal):</strong> قيم يمكن ترتيبها (مثل: تقييم الأداء، مستوى التعليم).</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rCodeDataType">
+                                                <i class="bi bi-filetype-r"></i> كود R
+                                            </button>
+                                        </h2>
+                                        <div id="rCodeDataType" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="r-code">
+                                                    <pre>
+data_quantitative <- c(25, 175.5, 82.3, 30)
+data_qualitative <- c("ذكر", "أنثى", "ذكر", "أنثى")
+typeof_quant <- typeof(data_quantitative)
+class_qual <- class(data_qualitative)
+print(paste("Quantitative Data Type:", typeof_quant))
+print(paste("Qualitative Data Class:", class_qual))
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade printable" id="sampling">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-people"></i> العينة والعينات العشوائية
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> <strong>العينة:</strong> جزء من المجتمع يتم اختياره لتمثيل المجتمع ككل
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">حجم المجتمع (N):</label>
+                                            <input type="number" class="form-control" id="populationSize" value="1000">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">حجم العينة (n):</label>
+                                            <input type="number" class="form-control" id="sampleSize" value="100">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">نسبة الثقة:</label>
+                                            <select class="form-control" id="confidenceLevel">
+                                                <option value="0.90">90%</option>
+                                                <option value="0.95" selected>95%</option>
+                                                <option value="0.99">99%</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">نسبة الخطأ المسموح بها (%):</label>
+                                            <input type="number" class="form-control" id="marginError" value="5" step="0.1">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">نسبة الانتشار (p):</label>
+                                            <input type="number" class="form-control" id="proportion" value="0.5" step="0.01">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary" onclick="calculateSampleSize()">
+                                        <i class="bi bi-calculator"></i> احسب حجم العينة
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="generateRandomSampling()">
+                                        <i class="bi bi-shuffle"></i> توليد مثال عشوائي
+                                    </button>
+                                    <button class="btn btn-info text-white ms-auto" onclick="window.print()">
+                                        <i class="bi bi-printer"></i> طباعة
+                                    </button>
+                                </div>
+                                <div id="samplingResults" class="mt-4"></div>
+                                <div id="randomSampleResults" class="mt-4"></div>
+                                <div class="chart-container">
+                                    <canvas id="samplingChart"></canvas>
+                                </div>
+                                <div class="accordion mt-4" id="samplingFormulas">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formulas3">
+                                                <i class="bi bi-book"></i> الصيغ المستخدمة
+                                            </button>
+                                        </h2>
+                                        <div id="formulas3" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="math-formula">
+                                                    حجم العينة (بدون تصحيح): n = (Z² × p × (1-p)) / e²
+                                                </div>
+                                                <div class="math-formula">
+                                                    حجم العينة (بتصحيح للمجتمع): n = N × n₀ / (N + n₀ - 1)
+                                                </div>
+                                                <div class="math-formula">
+                                                    Z (95%) = 1.96, Z (90%) = 1.645, Z (99%) = 2.576
+                                                </div>
+                                                <div class="example-box">
+                                                    مثال: N=1000, p=0.5, e=0.05, Z=1.96<br>
+                                                    n₀ = (1.96² × 0.5 × 0.5) / 0.05² = 384.16 ≈ 385<br>
+                                                    n = 1000 × 385 / (1000 + 385 - 1) ≈ 278
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rCode3">
+                                                <i class="bi bi-filetype-r"></i> كود R
+                                            </button>
+                                        </h2>
+                                        <div id="rCode3" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="r-code">
+                                                    <pre>
+# تحتاج إلى مكتبة "pwr" لحساب حجم العينة
+# install.packages("pwr")
+library(pwr)
+
+# مثال لحساب حجم العينة
+pwr.p.test(h = 0.5, sig.level = 0.05, power = 0.8)
+
+# مثال لتوليد عينة عشوائية
+population <- 1:1000
+sample_size <- 100
+random_sample <- sample(population, sample_size, replace = FALSE)
+print(random_sample)
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade printable" id="paramstat">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-person-fill"></i> المعلمة والإحصائية
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> <strong>المعلمة (Parameter):</strong> مقياس يصف خصائص مجتمع كامل. <strong>الإحصائية (Statistic):</strong> مقياس يصف خصائص عينة من المجتمع.
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">أدخل بيانات المجتمع (افصل بفواصل):</label>
+                                            <textarea class="form-control" id="populationData" rows="3" placeholder="مثال: 10, 15, 12, 18, 20, 14, 16, 22, 25, 17">10, 15, 12, 18, 20, 14, 16, 22, 25, 17</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">أدخل بيانات العينة (افصل بفواصل):</label>
+                                            <textarea class="form-control" id="sampleData" rows="3" placeholder="مثال: 12, 18, 14, 16">12, 18, 14, 16</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary" onclick="calculateParamStat()">
+                                        <i class="bi bi-calculator"></i> احسب القيم
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="generateRandomParamStat()">
+                                        <i class="bi bi-shuffle"></i> توليد مثال عشوائي
+                                    </button>
+                                    <button class="btn btn-info text-white ms-auto" onclick="window.print()">
+                                        <i class="bi bi-printer"></i> طباعة
+                                    </button>
+                                </div>
+                                <div id="paramStatResults" class="mt-4"></div>
+                                <div class="chart-container">
+                                    <canvas id="paramStatChart"></canvas>
+                                </div>
+                                <div class="accordion mt-4" id="paramStatFormulas">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formulas9">
+                                                <i class="bi bi-book"></i> الصيغ المستخدمة
+                                            </button>
+                                        </h2>
+                                        <div id="formulas9" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="math-formula">
+                                                    وسط المجتمع (µ): Σx / N
+                                                </div>
+                                                <div class="math-formula">
+                                                    وسط العينة (x̄): Σx / n
+                                                </div>
+                                                <div class="example-box">
+                                                    مثال: المجتمع [10, 15, 12, 18, 20, 14, 16, 22, 25, 17]<br>
+                                                    وسط المجتمع = 16.9<br>
+                                                    العينة [12, 18, 14, 16]<br>
+                                                    وسط العينة = 15
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rCode9">
+                                                <i class="bi bi-filetype-r"></i> كود R
+                                            </button>
+                                        </h2>
+                                        <div id="rCode9" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="r-code">
+                                                    <pre>
+population <- c(10, 15, 12, 18, 20, 14, 16, 22, 25, 17)
+sample_data <- c(12, 18, 14, 16)
+population_mean <- mean(population)
+sample_mean <- mean(sample_data)
+print(paste("Population Mean (Parameter):", population_mean))
+print(paste("Sample Mean (Statistic):", sample_mean))
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade printable" id="discreteDist">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-graph-up-arrow"></i> التوزيع الاحتمالي المنفصل
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> <strong>التوزيع الاحتمالي المنفصل:</strong> يمثل احتمالات القيم التي يمكن عدها (أعداد صحيحة). أمثلة عليه في هذا البرنامج: **التوزيع البرنولي، توزيع بواسون، التوزيع الثنائي**.
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">أدخل البيانات المنفصلة (افصل بين القيم بفواصل):</label>
+                                    <textarea class="form-control" id="discreteData" rows="3" placeholder="مثال: 0, 1, 1, 2, 3, 3, 3, 4">0, 1, 1, 2, 3, 3, 3, 4</textarea>
+                                </div>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary" onclick="calculateDiscreteDist()">
+                                        <i class="bi bi-calculator"></i> احسب التوزيع
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="generateRandomDiscreteData()">
+                                        <i class="bi bi-shuffle"></i> توليد مثال عشوائي
+                                    </button>
+                                    <button class="btn btn-info text-white ms-auto" onclick="window.print()">
+                                        <i class="bi bi-printer"></i> طباعة
+                                    </button>
+                                </div>
+                                <div id="discreteDistResults" class="mt-4 table-responsive"></div>
+                                <div class="chart-container">
+                                    <canvas id="discreteDistChart"></canvas>
+                                </div>
+                                <div class="accordion mt-4" id="discreteDistFormulas">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formulasDiscrete">
+                                                <i class="bi bi-book"></i> الصيغ المستخدمة
+                                            </button>
+                                        </h2>
+                                        <div id="formulasDiscrete" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="math-formula">
+                                                    P(X=x) = تكرار x / إجمالي عدد القيم
+                                                </div>
+                                                <div class="example-box">
+                                                    مثال: البيانات [0, 1, 1, 2, 3, 3, 3, 4]<br>
+                                                    إجمالي القيم = 8.<br>
+                                                    P(X=3) = 3/8 = 0.375
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rCodeDiscrete">
+                                                <i class="bi bi-filetype-r"></i> كود R
+                                            </button>
+                                        </h2>
+                                        <div id="rCodeDiscrete" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="r-code">
+                                                    <pre>
+data <- c(0, 1, 1, 2, 3, 3, 3, 4)
+prob_table <- prop.table(table(data))
+print("Discrete Probability Distribution:")
+print(prob_table)
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade printable" id="continuousDist">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-graph-up"></i> التوزيع الاحتمالي المتصل
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> <strong>التوزيع الاحتمالي المتصل:</strong> يمثل احتمالات القيم في نطاق معين. أمثلة عليه في هذا البرنامج: **التوزيع الطبيعي، التوزيع الأسي**.
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">أدخل البيانات المتصلة (افصل بين القيم بفواصل):</label>
+                                    <textarea class="form-control" id="continuousData" rows="3" placeholder="مثال: 1.5, 2.2, 3.8, 4.1, 5.0, 5.5, 6.2">1.5, 2.2, 3.8, 4.1, 5.0, 5.5, 6.2</textarea>
+                                </div>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary" onclick="calculateContinuousDist()">
+                                        <i class="bi bi-calculator"></i> احسب التوزيع
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="generateRandomContinuousData()">
+                                        <i class="bi bi-shuffle"></i> توليد مثال عشوائي
+                                    </button>
+                                    <button class="btn btn-info text-white ms-auto" onclick="window.print()">
+                                        <i class="bi bi-printer"></i> طباعة
+                                    </button>
+                                </div>
+                                <div id="continuousDistResults" class="mt-4"></div>
+                                <div class="chart-container">
+                                    <canvas id="continuousDistChart"></canvas>
+                                </div>
+                                <div class="accordion mt-4" id="continuousDistFormulas">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formulasContinuous">
+                                                <i class="bi bi-book"></i> الصيغ المستخدمة
+                                            </button>
+                                        </h2>
+                                        <div id="formulasContinuous" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="math-formula">
+                                                    PDF: الدالة الكثافية الاحتمالية (تصف الاحتمال في نقطة)
+                                                </div>
+                                                <div class="math-formula">
+                                                    CDF: الدالة التوزيعية التراكمية (تصف الاحتمال حتى نقطة معينة)
+                                                </div>
+                                                <div class="example-box">
+                                                    أمثلة: التوزيع الطبيعي والتوزيع الأسي.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rCodeContinuous">
+                                                <i class="bi bi-filetype-r"></i> كود R
+                                            </button>
+                                        </h2>
+                                        <div id="rCodeContinuous" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="r-code">
+                                                    <pre>
+# حساب الكثافة التقديرية (density estimation)
+data <- c(1.5, 2.2, 3.8, 4.1, 5.0, 5.5, 6.2)
+density_data <- density(data)
+plot(density_data, main="Kernel Density Plot")
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade printable" id="bernoulli">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-dice-1"></i> التوزيع البرنولي
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> <strong>التوزيع البرنولي:</strong> تجربة ذات نتيجتين فقط (نجاح أو فشل)
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">احتمال النجاح (p):</label>
+                                            <input type="number" class="form-control" id="bernoulliP" value="0.3" min="0" max="1" step="0.01">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">عدد التجارب (n):</label>
+                                            <input type="number" class="form-control" id="bernoulliN" value="1" min="1" max="10">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">عدد النجاحات (k):</label>
+                                            <input type="number" class="form-control" id="bernoulliK" value="1" min="0">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary" onclick="calculateBernoulli()">
+                                        <i class="bi bi-calculator"></i> احسب الاحتمال
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="generateRandomBernoulli()">
+                                        <i class="bi bi-shuffle"></i> توليد مثال عشوائي
+                                    </button>
+                                    <button class="btn btn-info text-white ms-auto" onclick="window.print()">
+                                        <i class="bi bi-printer"></i> طباعة
+                                    </button>
+                                </div>
+                                <div id="bernoulliResults" class="mt-4"></div>
+                                <div class="chart-container">
+                                    <canvas id="bernoulliChart"></canvas>
+                                </div>
+                                <div class="accordion mt-4" id="bernoulliFormulas">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formulas4">
+                                                <i class="bi bi-book"></i> الصيغ المستخدمة
+                                            </button>
+                                        </h2>
+                                        <div id="formulas4" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="math-formula">
+                                                    P(X=k) = C(n,k) × pᵏ × (1-p)ⁿ⁻ᵏ
+                                                </div>
+                                                <div class="math-formula">
+                                                    الوسط = n × p
+                                                </div>
+                                                <div class="math-formula">
+                                                    التباين = n × p × (1-p)
+                                                </div>
+                                                <div class="example-box">
+                                                    مثال: p=0.3, n=1, k=1<br>
+                                                    P(X=1) = 1 × 0.3¹ × 0.7⁰ = 0.3
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rCode4">
+                                                <i class="bi bi-filetype-r"></i> كود R
+                                            </button>
+                                        </h2>
+                                        <div id="rCode4" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="r-code">
+                                                    <pre>
+n <- 1
+p <- 0.3
+k <- 1
+probability <- dbinom(k, size = n, prob = p)
+mean_val <- n * p
+variance_val <- n * p * (1-p)
+print(paste("Probability:", probability))
+print(paste("Mean:", mean_val))
+print(paste("Variance:", variance_val))
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade printable" id="poisson">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-dice-2"></i> توزيع بواسون
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> <strong>توزيع بواسون:</strong> يعبر عن احتمال حدوث عدد معين من الأحداث في فترة زمنية محددة
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">متوسط عدد الأحداث (λ):</label>
+                                            <input type="number" class="form-control" id="poissonLambda" value="3.5" min="0" step="0.1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">عدد الأحداث المطلوب (k):</label>
+                                            <input type="number" class="form-control" id="poissonK" value="2" min="0">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary" onclick="calculatePoisson()">
+                                        <i class="bi bi-calculator"></i> احسب الاحتمال
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="generateRandomPoisson()">
+                                        <i class="bi bi-shuffle"></i> توليد مثال عشوائي
+                                    </button>
+                                    <button class="btn btn-info text-white ms-auto" onclick="window.print()">
+                                        <i class="bi bi-printer"></i> طباعة
+                                    </button>
+                                </div>
+                                <div id="poissonResults" class="mt-4"></div>
+                                <div class="chart-container">
+                                    <canvas id="poissonChart"></canvas>
+                                </div>
+                                <div class="accordion mt-4" id="poissonFormulas">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formulas5">
+                                                <i class="bi bi-book"></i> الصيغ المستخدمة
+                                            </button>
+                                        </h2>
+                                        <div id="formulas5" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="math-formula">
+                                                    P(X=k) = (λᵏ × e⁻ˡᵃᵐᵇᵈᵃ) / k!
+                                                </div>
+                                                <div class="math-formula">
+                                                    الوسط = λ
+                                                </div>
+                                                <div class="math-formula">
+                                                    التباين = λ
+                                                </div>
+                                                <div class="example-box">
+                                                    مثال: λ=3.5, k=2<br>
+                                                    P(X=2) = (3.5² × e⁻³·⁵) / 2! ≈ 0.185
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rCode5">
+                                                <i class="bi bi-filetype-r"></i> كود R
+                                            </button>
+                                        </h2>
+                                        <div id="rCode5" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="r-code">
+                                                    <pre>
+lambda <- 3.5
+k <- 2
+probability <- dpois(k, lambda)
+print(paste("Probability:", probability))
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade printable" id="normal">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-dice-3"></i> التوزيع الطبيعي
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> <strong>التوزيع الطبيعي:</strong> يصف البيانات التي تتجمع حول قيمة مركزية وتتوزع بشكل متماثل
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">الوسط (μ):</label>
+                                            <input type="number" class="form-control" id="normalMu" value="0" step="0.1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">الانحراف المعياري (σ):</label>
+                                            <input type="number" class="form-control" id="normalSigma" value="1" min="0.1" step="0.1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">القيمة (x):</label>
+                                            <input type="number" class="form-control" id="normalX" value="1.96" step="0.01">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary" onclick="calculateNormal()">
+                                        <i class="bi bi-calculator"></i> احسب الاحتمال
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="generateRandomNormal()">
+                                        <i class="bi bi-shuffle"></i> توليد مثال عشوائي
+                                    </button>
+                                    <button class="btn btn-info text-white ms-auto" onclick="window.print()">
+                                        <i class="bi bi-printer"></i> طباعة
+                                    </button>
+                                </div>
+                                <div id="normalResults" class="mt-4"></div>
+                                <div class="chart-container">
+                                    <canvas id="normalChart"></canvas>
+                                </div>
+                                <div class="accordion mt-4" id="normalFormulas">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formulas6">
+                                                <i class="bi bi-book"></i> الصيغ المستخدمة
+                                            </button>
+                                        </h2>
+                                        <div id="formulas6" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="math-formula">
+                                                    دالة الكثافة الاحتمالية (PDF): f(x) = (1 / (σ√2π)) * e⁻⁰·⁵((x-μ)/σ)²
+                                                </div>
+                                                <div class="math-formula">
+                                                    القيمة المعيارية (Z-score): Z = (x - μ) / σ
+                                                </div>
+                                                <div class="example-box">
+                                                    مثال: μ=0, σ=1, x=1.96<br>
+                                                    Z = (1.96 - 0) / 1 = 1.96
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rCode6">
+                                                <i class="bi bi-filetype-r"></i> كود R
+                                            </button>
+                                        </h2>
+                                        <div id="rCode6" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="r-code">
+                                                    <pre>
+mu <- 0
+sigma <- 1
+x <- 1.96
+probability_less_than <- pnorm(x, mean = mu, sd = sigma)
+print(paste("Probability (X <", x, "):", probability_less_than))
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade printable" id="binomial">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-dice-4"></i> التوزيع الثنائي
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> <strong>التوزيع الثنائي:</strong> يصف عدد النجاحات في سلسلة من التجارب المستقلة
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">عدد التجارب (n):</label>
+                                            <input type="number" class="form-control" id="binomialN" value="10" min="1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">احتمال النجاح (p):</label>
+                                            <input type="number" class="form-control" id="binomialP" value="0.5" min="0" max="1" step="0.01">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">عدد النجاحات (k):</label>
+                                            <input type="number" class="form-control" id="binomialK" value="5" min="0">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary" onclick="calculateBinomial()">
+                                        <i class="bi bi-calculator"></i> احسب الاحتمال
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="generateRandomBinomial()">
+                                        <i class="bi bi-shuffle"></i> توليد مثال عشوائي
+                                    </button>
+                                    <button class="btn btn-info text-white ms-auto" onclick="window.print()">
+                                        <i class="bi bi-printer"></i> طباعة
+                                    </button>
+                                </div>
+                                <div id="binomialResults" class="mt-4"></div>
+                                <div class="chart-container">
+                                    <canvas id="binomialChart"></canvas>
+                                </div>
+                                <div class="accordion mt-4" id="binomialFormulas">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formulas7">
+                                                <i class="bi bi-book"></i> الصيغ المستخدمة
+                                            </button>
+                                        </h2>
+                                        <div id="formulas7" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="math-formula">
+                                                    P(X=k) = C(n,k) × pᵏ × (1-p)ⁿ⁻ᵏ
+                                                </div>
+                                                <div class="math-formula">
+                                                    الوسط = n × p
+                                                </div>
+                                                <div class="math-formula">
+                                                    التباين = n × p × (1-p)
+                                                </div>
+                                                <div class="example-box">
+                                                    مثال: n=10, p=0.5, k=5<br>
+                                                    P(X=5) = C(10,5) × 0.5⁵ × 0.5⁵ ≈ 0.246
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rCode7">
+                                                <i class="bi bi-filetype-r"></i> كود R
+                                            </button>
+                                        </h2>
+                                        <div id="rCode7" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="r-code">
+                                                    <pre>
+n <- 10
+p <- 0.5
+k <- 5
+probability <- dbinom(k, size = n, prob = p)
+mean_val <- n * p
+variance_val <- n * p * (1-p)
+print(paste("Probability:", probability))
+print(paste("Mean:", mean_val))
+print(paste("Variance:", variance_val))
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade printable" id="exponential">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="bi bi-dice-5"></i> التوزيع الأسي
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> <strong>التوزيع الأسي:</strong> يصف الوقت بين حدثين في عملية بواسون
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">معدل الحدوث (λ):</label>
+                                            <input type="number" class="form-control" id="exponentialLambda" value="0.5" min="0.1" step="0.1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">القيمة (x):</label>
+                                            <input type="number" class="form-control" id="exponentialX" value="2" min="0" step="0.1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-primary" onclick="calculateExponential()">
+                                        <i class="bi bi-calculator"></i> احسب الاحتمال
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="generateRandomExponential()">
+                                        <i class="bi bi-shuffle"></i> توليد مثال عشوائي
+                                    </button>
+                                    <button class="btn btn-info text-white ms-auto" onclick="window.print()">
+                                        <i class="bi bi-printer"></i> طباعة
+                                    </button>
+                                </div>
+                                <div id="exponentialResults" class="mt-4"></div>
+                                <div class="chart-container">
+                                    <canvas id="exponentialChart"></canvas>
+                                </div>
+                                <div class="accordion mt-4" id="exponentialFormulas">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#formulas8">
+                                                <i class="bi bi-book"></i> الصيغ المستخدمة
+                                            </button>
+                                        </h2>
+                                        <div id="formulas8" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="math-formula">
+                                                    دالة الكثافة الاحتمالية (PDF): f(x) = λe⁻ˡᵃᵐᵇᵈᵃˣ
+                                                </div>
+                                                <div class="math-formula">
+                                                    دالة التوزيع التراكمي (CDF): F(x) = 1 - e⁻ˡᵃᵐᵇᵈᵃˣ
+                                                </div>
+                                                <div class="example-box">
+                                                    مثال: λ=0.5, x=2<br>
+                                                    F(2) = 1 - e⁻⁰·⁵⁽²⁾ = 1 - e⁻¹ ≈ 0.632
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#rCode8">
+                                                <i class="bi bi-filetype-r"></i> كود R
+                                            </button>
+                                        </h2>
+                                        <div id="rCode8" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="r-code">
+                                                    <pre>
+lambda <- 0.5
+x <- 2
+probability <- pexp(x, rate = lambda)
+print(paste("Probability (X <", x, "):", probability))
+                                                    </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        تم تطوير هذا البرنامج بواسطة خبراء في الإحصاء وتحليل البيانات.
+    </footer>
+
+    <script>
+        // دالة مساعدة لتحويل السلسلة النصية إلى مصفوفة أرقام
+        function parseData(dataStr) {
+            return dataStr.split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
+        }
+
+        // دالة حساب مقاييس النزعة المركزية
+        function calculateCentralTendency() {
+            const dataInput = document.getElementById('dataInput').value;
+            const data = parseData(dataInput);
+            if (data.length === 0) {
+                document.getElementById('centralResults').innerHTML = '<div class="alert alert-danger mt-3">الرجاء إدخال بيانات صالحة.</div>';
+                return;
+            }
+
+            const mean = math.mean(data);
+            const median = math.median(data);
+            const mode = math.mode(data);
+
+            let modeResult = mode.length ? mode.join(', ') : 'لا يوجد';
+
+            const resultsHtml = `
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="result-box text-center">
+                            <i class="bi bi-circle-fill"></i>
+                            <p class="mb-0"><strong>الوسط الحسابي:</strong></p>
+                            <p class="mb-0 fs-4">${mean.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="result-box text-center">
+                            <i class="bi bi-circle-fill"></i>
+                            <p class="mb-0"><strong>الوسيط:</strong></p>
+                            <p class="mb-0 fs-4">${median.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="result-box text-center">
+                            <i class="bi bi-circle-fill"></i>
+                            <p class="mb-0"><strong>المنوال:</strong></p>
+                            <p class="mb-0 fs-4">${modeResult}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('centralResults').innerHTML = resultsHtml;
+
+            updateCentralChart(centralChart, data);
+        }
+
+        // دالة حساب مقاييس التشتت
+        function calculateDispersion() {
+            const dataInput = document.getElementById('dispersionData').value;
+            const data = parseData(dataInput);
+            if (data.length < 2) {
+                document.getElementById('dispersionResults').innerHTML = '<div class="alert alert-danger mt-3">الرجاء إدخال قيمتين على الأقل.</div>';
+                return;
+            }
+
+            const sortedData = data.slice().sort((a, b) => a - b);
+            const range = sortedData[sortedData.length - 1] - sortedData[0];
+            const variance = math.variance(data);
+            const stdDev = math.std(data);
+            const mean = math.mean(data);
+            const cv = (stdDev / mean) * 100;
+
+            const resultsHtml = `
+                <div class="row">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="result-box text-center">
+                            <i class="bi bi-circle-fill"></i>
+                            <p class="mb-0"><strong>المدى:</strong></p>
+                            <p class="mb-0 fs-4">${range.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="result-box text-center">
+                            <i class="bi bi-circle-fill"></i>
+                            <p class="mb-0"><strong>التباين:</strong></p>
+                            <p class="mb-0 fs-4">${variance.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="result-box text-center">
+                            <i class="bi bi-circle-fill"></i>
+                            <p class="mb-0"><strong>الانحراف المعياري:</strong></p>
+                            <p class="mb-0 fs-4">${stdDev.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="result-box text-center">
+                            <i class="bi bi-circle-fill"></i>
+                            <p class="mb-0"><strong>المعامل التبايني:</strong></p>
+                            <p class="mb-0 fs-4">${cv.toFixed(2)}%</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('dispersionResults').innerHTML = resultsHtml;
+
+            updateDispersionChart(dispersionChart, data);
+        }
+
+        // دالة حساب معامل ارتباط سبيرمان
+        function calculateSpearman() {
+            const xDataStr = document.getElementById('spearmanXData').value;
+            const yDataStr = document.getElementById('spearmanYData').value;
+            const xData = parseData(xDataStr);
+            const yData = parseData(yDataStr);
+
+            if (xData.length !== yData.length || xData.length < 2) {
+                document.getElementById('spearmanResults').innerHTML = '<div class="alert alert-danger mt-3">الرجاء إدخال نفس عدد القيم للمتغيرين (قيمتين على الأقل).</div>';
+                return;
+            }
+
+            const n = xData.length;
+
+            function getRanks(arr) {
+                const sorted = arr.slice().sort((a, b) => a - b);
+                const ranks = arr.map(val => sorted.indexOf(val) + 1);
+                return ranks;
+            }
+
+            const rankX = getRanks(xData);
+            const rankY = getRanks(yData);
+            let sumSqDiff = 0;
+            for (let i = 0; i < n; i++) {
+                sumSqDiff += math.pow(rankX[i] - rankY[i], 2);
+            }
+
+            const spearman = 1 - (6 * sumSqDiff) / (n * (math.pow(n, 2) - 1));
+
+            const resultsHtml = `
+                <div class="result-box text-center">
+                    <i class="bi bi-bar-chart-steps"></i>
+                    <p class="mb-0"><strong>معامل ارتباط سبيرمان:</strong></p>
+                    <p class="mb-0 fs-4">${spearman.toFixed(4)}</p>
+                </div>
+            `;
+            document.getElementById('spearmanResults').innerHTML = resultsHtml;
+
+            updateCorrelationChart(spearmanChart, xData, yData);
+        }
+
+        // دالة حساب معامل ارتباط بيرسون
+        function calculatePearson() {
+            const xDataStr = document.getElementById('pearsonXData').value;
+            const yDataStr = document.getElementById('pearsonYData').value;
+            const xData = parseData(xDataStr);
+            const yData = parseData(yDataStr);
+
+            if (xData.length !== yData.length || xData.length < 2) {
+                document.getElementById('pearsonResults').innerHTML = '<div class="alert alert-danger mt-3">الرجاء إدخال نفس عدد القيم للمتغيرين (قيمتين على الأقل).</div>';
+                return;
+            }
+
+            const n = xData.length;
+            const sumX = math.sum(xData);
+            const sumY = math.sum(yData);
+            const sumXY = math.sum(math.dotMultiply(xData, yData));
+            const sumX2 = math.sum(math.dotMultiply(xData, xData));
+            const sumY2 = math.sum(math.dotMultiply(yData, yData));
+
+            const numerator = (n * sumXY) - (sumX * sumY);
+            const denominator = math.sqrt(((n * sumX2) - math.pow(sumX, 2)) * ((n * sumY2) - math.pow(sumY, 2)));
+
+            const pearson = numerator / denominator;
+
+            const resultsHtml = `
+                <div class="result-box text-center">
+                    <i class="bi bi-bar-chart-fill"></i>
+                    <p class="mb-0"><strong>معامل ارتباط بيرسون:</strong></p>
+                    <p class="mb-0 fs-4">${pearson.toFixed(4)}</p>
+                </div>
+            `;
+            document.getElementById('pearsonResults').innerHTML = resultsHtml;
+
+            updateCorrelationChart(pearsonChart, xData, yData);
+        }
+
+        // دالة حساب التكرار النسبي التراكمي
+        function calculateRelativeFrequency() {
+            const dataInput = document.getElementById('freqData').value;
+            const data = parseData(dataInput);
+            if (data.length === 0) {
+                document.getElementById('freqResults').innerHTML = '<div class="alert alert-danger mt-3">الرجاء إدخال بيانات صالحة.</div>';
+                return;
+            }
+
+            const n = data.length;
+            const counts = {};
+            data.forEach(d => {
+                counts[d] = (counts[d] || 0) + 1;
+            });
+
+            const sortedKeys = Object.keys(counts).sort((a, b) => a - b);
+            let cumulativeFreq = 0;
+            let resultsHtml = `<table class="table table-striped"><thead><tr><th>القيمة</th><th>التكرار</th><th>التكرار النسبي</th><th>التكرار النسبي التراكمي</th></tr></thead><tbody>`;
+            
+            const labels = [];
+            const freqData = [];
+            
+            sortedKeys.forEach(key => {
+                const count = counts[key];
+                const relativeFreq = count / n;
+                cumulativeFreq += relativeFreq;
+                
+                labels.push(key);
+                freqData.push(cumulativeFreq * 100);
+
+                resultsHtml += `
+                    <tr>
+                        <td>${key}</td>
+                        <td>${count}</td>
+                        <td>${(relativeFreq * 100).toFixed(2)}%</td>
+                        <td>${(cumulativeFreq * 100).toFixed(2)}%</td>
+                    </tr>
+                `;
+            });
+
+            resultsHtml += `</tbody></table>`;
+            document.getElementById('freqResults').innerHTML = resultsHtml;
+
+            updateFreqChart(freqChart, labels, freqData);
+        }
+
+        // دالة تحليل نوع البيانات
+        function analyzeDataType() {
+            const dataInput = document.getElementById('dataTypeInput').value;
+            const data = dataInput.split(',').map(s => s.trim());
+            if (data.length === 0 || (data.length === 1 && data[0] === '')) {
+                document.getElementById('dataTypeResults').innerHTML = '<div class="alert alert-danger mt-3">الرجاء إدخال بيانات.</div>';
+                return;
+            }
+
+            let quantitativeCount = 0;
+            let qualitativeCount = 0;
+            const qualitativeData = {};
+            const quantitativeData = [];
+
+            data.forEach(item => {
+                if (!isNaN(parseFloat(item))) {
+                    quantitativeCount++;
+                    quantitativeData.push(parseFloat(item));
+                } else {
+                    qualitativeCount++;
+                    qualitativeData[item] = (qualitativeData[item] || 0) + 1;
+                }
+            });
+
+            const totalCount = data.length;
+            const quantPercentage = (quantitativeCount / totalCount) * 100;
+            const qualPercentage = (qualitativeCount / totalCount) * 100;
+
+            let resultsHtml = `
+                <div class="result-box text-center">
+                    <i class="bi bi-pie-chart-fill"></i>
+                    <p class="mb-0"><strong>نسبة البيانات الكمية:</strong> ${quantPercentage.toFixed(2)}%</p>
+                    <p class="mb-0"><strong>نسبة البيانات النوعية:</strong> ${qualPercentage.toFixed(2)}%</p>
+                </div>
+            `;
+
+            if (quantitativeData.length > 0) {
+                const quantMean = math.mean(quantitativeData);
+                resultsHtml += `
+                    <div class="alert alert-success mt-3">
+                        <p><strong>تحليل البيانات الكمية:</strong></p>
+                        <p>الوسط الحسابي: ${quantMean.toFixed(2)}</p>
+                    </div>
+                `;
+            }
+
+            if (Object.keys(qualitativeData).length > 0) {
+                resultsHtml += `
+                    <div class="alert alert-warning mt-3">
+                        <p><strong>تحليل البيانات النوعية:</strong></p>
+                        <ul class="list-unstyled">
+                `;
+                for (const key in qualitativeData) {
+                    resultsHtml += `<li>- ${key}: ${qualitativeData[key]} تكرار</li>`;
+                }
+                resultsHtml += `</ul></div>`;
+            }
+
+            document.getElementById('dataTypeResults').innerHTML = resultsHtml;
+            updateDataTypeChart(dataTypeChart, quantitativeCount, qualitativeCount);
+        }
+
+        // دالة حساب حجم العينة
+        function calculateSampleSize() {
+            const N = parseFloat(document.getElementById('populationSize').value);
+            const e = parseFloat(document.getElementById('marginError').value) / 100;
+            const confidenceLevel = parseFloat(document.getElementById('confidenceLevel').value);
+            const p = parseFloat(document.getElementById('proportion').value);
+
+            let z;
+            if (confidenceLevel === 0.90) z = 1.645;
+            else if (confidenceLevel === 0.95) z = 1.96;
+            else if (confidenceLevel === 0.99) z = 2.576;
+            else z = 1.96; // قيمة افتراضية
+
+            const n0 = (math.pow(z, 2) * p * (1 - p)) / math.pow(e, 2);
+            const n = (N * n0) / (N + n0 - 1);
+
+            const resultsHtml = `
+                <div class="result-box text-center">
+                    <i class="bi bi-people"></i>
+                    <p class="mb-0"><strong>حجم العينة بدون تصحيح:</strong></p>
+                    <p class="mb-0 fs-4">${Math.round(n0)}</p>
+                </div>
+                <div class="result-box text-center mt-3">
+                    <i class="bi bi-people"></i>
+                    <p class="mb-0"><strong>حجم العينة المصحح:</strong></p>
+                    <p class="mb-0 fs-4">${Math.round(n)}</p>
+                </div>
+            `;
+            document.getElementById('samplingResults').innerHTML = resultsHtml;
+            
+            updateSamplingChart(samplingChart, N, Math.round(n));
+        }
+
+        // دالة حساب المعلمة والإحصائية
+        function calculateParamStat() {
+            const populationData = parseData(document.getElementById('populationData').value);
+            const sampleData = parseData(document.getElementById('sampleData').value);
+            
+            if (populationData.length === 0 || sampleData.length === 0) {
+                document.getElementById('paramStatResults').innerHTML = '<div class="alert alert-danger mt-3">الرجاء إدخال بيانات للمجتمع والعينة.</div>';
+                return;
+            }
+
+            const populationMean = math.mean(populationData);
+            const sampleMean = math.mean(sampleData);
+
+            const resultsHtml = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="result-box text-center">
+                            <i class="bi bi-person-fill"></i>
+                            <p class="mb-0"><strong>وسط المجتمع (المعلمة):</strong></p>
+                            <p class="mb-0 fs-4">${populationMean.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="result-box text-center">
+                            <i class="bi bi-person-fill"></i>
+                            <p class="mb-0"><strong>وسط العينة (الإحصائية):</strong></p>
+                            <p class="mb-0 fs-4">${sampleMean.toFixed(2)}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('paramStatResults').innerHTML = resultsHtml;
+
+            updateParamStatChart(paramStatChart, populationMean, sampleMean);
+        }
+
+        // دالة حساب التوزيع الاحتمالي المنفصل
+        function calculateDiscreteDist() {
+            const dataInput = document.getElementById('discreteData').value;
+            const data = parseData(dataInput);
+            if (data.length === 0) {
+                document.getElementById('discreteDistResults').innerHTML = '<div class="alert alert-danger mt-3">الرجاء إدخال بيانات صالحة.</div>';
+                return;
+            }
+
+            const n = data.length;
+            const counts = {};
+            data.forEach(d => {
+                counts[d] = (counts[d] || 0) + 1;
+            });
+            const sortedKeys = Object.keys(counts).sort((a, b) => a - b);
+            
+            let resultsHtml = `<table class="table table-striped"><thead><tr><th>القيمة (x)</th><th>الاحتمال (P(X=x))</th></tr></thead><tbody>`;
+            const labels = [];
+            const probData = [];
+
+            sortedKeys.forEach(key => {
+                const probability = counts[key] / n;
+                labels.push(key);
+                probData.push(probability);
+                resultsHtml += `<tr><td>${key}</td><td>${probability.toFixed(4)}</td></tr>`;
+            });
+            resultsHtml += `</tbody></table>`;
+            document.getElementById('discreteDistResults').innerHTML = resultsHtml;
+
+            updateBarChart(discreteDistChart, labels, probData);
+        }
+
+        // دالة حساب التوزيع الاحتمالي المتصل
+        function calculateContinuousDist() {
+            const dataInput = document.getElementById('continuousData').value;
+            const data = parseData(dataInput);
+            if (data.length === 0) {
+                document.getElementById('continuousDistResults').innerHTML = '<div class="alert alert-danger mt-3">الرجاء إدخال بيانات صالحة.</div>';
+                return;
+            }
+
+            const mean = math.mean(data);
+            const stdDev = math.std(data);
+
+            const resultsHtml = `
+                <div class="result-box text-center">
+                    <i class="bi bi-graph-up"></i>
+                    <p class="mb-0"><strong>وسط البيانات:</strong></p>
+                    <p class="mb-0 fs-4">${mean.toFixed(2)}</p>
+                </div>
+                <div class="result-box text-center mt-3">
+                    <i class="bi bi-graph-up"></i>
+                    <p class="mb-0"><strong>الانحراف المعياري:</strong></p>
+                    <p class="mb-0 fs-4">${stdDev.toFixed(2)}</p>
+                </div>
+            `;
+            document.getElementById('continuousDistResults').innerHTML = resultsHtml;
+            updateDensityChart(continuousDistChart, data);
+        }
+
+        // دالة حساب التوزيع البرنولي
+        function calculateBernoulli() {
+            const p = parseFloat(document.getElementById('bernoulliP').value);
+            const n = parseInt(document.getElementById('bernoulliN').value);
+            const k = parseInt(document.getElementById('bernoulliK').value);
+
+            if (isNaN(p) || isNaN(n) || isNaN(k)) {
+                document.getElementById('bernoulliResults').innerHTML = '<div class="alert alert-danger mt-3">الرجاء إدخال قيم صالحة.</div>';
+                return;
+            }
+
+            if (p < 0 || p > 1) {
+                document.getElementById('bernoulliResults').innerHTML = '<div class="alert alert-danger mt-3">احتمال النجاح (p) يجب أن يكون بين 0 و 1.</div>';
+                return;
+            }
+
+            const probability = math.combinations(n, k) * math.pow(p, k) * math.pow(1 - p, n - k);
+            const mean = n * p;
+            const variance = n * p * (1 - p);
+
+            const resultsHtml = `
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="result-box text-center">
+                            <p class="mb-0"><strong>الاحتمال P(X=${k}):</strong></p>
+                            <p class="mb-0 fs-4">${probability.toFixed(4)}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="result-box text-center">
+                            <p class="mb-0"><strong>الوسط:</strong></p>
+                            <p class="mb-0 fs-4">${mean.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="result-box text-center">
+                            <p class="mb-0"><strong>التباين:</strong></p>
+                            <p class="mb-0 fs-4">${variance.toFixed(2)}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('bernoulliResults').innerHTML = resultsHtml;
+
+            updateBinomialChart(bernoulliChart, n, p);
+        }
+
+        // دالة حساب توزيع بواسون
+        function calculatePoisson() {
+            const lambda = parseFloat(document.getElementById('poissonLambda').value);
+            const k = parseInt(document.getElementById('poissonK').value);
+
+            if (isNaN(lambda) || isNaN(k)) {
+                document.getElementById('poissonResults').innerHTML = '<div class="alert alert-danger mt-3">الرجاء إدخال قيم صالحة.</div>';
+                return;
+            }
+
+            const probability = (math.pow(lambda, k) * math.exp(-lambda)) / math.factorial(k);
+            const mean = lambda;
+            const variance = lambda;
+
+            const resultsHtml = `
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="result-box text-center">
+                            <p class="mb-0"><strong>الاحتمال P(X=${k}):</strong></p>
+                            <p class="mb-0 fs-4">${probability.toFixed(4)}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="result-box text-center">
+                            <p class="mb-0"><strong>الوسط:</strong></p>
+                            <p class="mb-0 fs-4">${mean.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="result-box text-center">
+                            <p class="mb-0"><strong>التباين:</strong></p>
+                            <p class="mb-0 fs-4">${variance.toFixed(2)}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('poissonResults').innerHTML = resultsHtml;
+
+            updatePoissonChart(poissonChart, lambda);
+        }
+
+        // دالة حساب التوزيع الطبيعي
+        function calculateNormal() {
+            const mu = parseFloat(document.getElementById('normalMu').value);
+            const sigma = parseFloat(document.getElementById('normalSigma').value);
+            const x = parseFloat(document.getElementById('normalX').value);
+
+            if (isNaN(mu) || isNaN(sigma) || isNaN(x) || sigma <= 0) {
+                document.getElementById('normalResults').innerHTML = '<div class="alert alert-danger mt-3">الرجاء إدخال قيم صالحة. الانحراف المعياري يجب أن يكون أكبر من الصفر.</div>';
+                return;
+            }
+
+            const z = (x - mu) / sigma;
+            const resultsHtml = `
+                <div class="result-box text-center">
+                    <i class="bi bi-dice-3"></i>
+                    <p class="mb-0"><strong>القيمة المعيارية (Z):</strong></p>
+                    <p class="mb-0 fs-4">${z.toFixed(4)}</p>
+                </div>
+            `;
+            document.getElementById('normalResults').innerHTML = resultsHtml;
+            updateNormalChart(normalChart, mu, sigma, x, 'cdf');
+        }
+
+        // دالة حساب التوزيع الثنائي
+        function calculateBinomial() {
+            const n = parseInt(document.getElementById('binomialN').value);
+            const p = parseFloat(document.getElementById('binomialP').value);
+            const k = parseInt(document.getElementById('binomialK').value);
+
+            if (isNaN(n) || isNaN(p) || isNaN(k) || p < 0 || p > 1 || k < 0 || k > n) {
+                document.getElementById('binomialResults').innerHTML = '<div class="alert alert-danger mt-3">الرجاء إدخال قيم صالحة.</div>';
+                return;
+            }
+
+            const probability = math.combinations(n, k) * math.pow(p, k) * math.pow(1 - p, n - k);
+            const mean = n * p;
+            const variance = n * p * (1 - p);
+
+            const resultsHtml = `
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="result-box text-center">
+                            <p class="mb-0"><strong>الاحتمال P(X=${k}):</strong></p>
+                            <p class="mb-0 fs-4">${probability.toFixed(4)}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="result-box text-center">
+                            <p class="mb-0"><strong>الوسط:</strong></p>
+                            <p class="mb-0 fs-4">${mean.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="result-box text-center">
+                            <p class="mb-0"><strong>التباين:</strong></p>
+                            <p class="mb-0 fs-4">${variance.toFixed(2)}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('binomialResults').innerHTML = resultsHtml;
+
+            updateBinomialChart(binomialChart, n, p);
+        }
+
+        // دالة حساب التوزيع الأسي
+        function calculateExponential() {
+            const lambda = parseFloat(document.getElementById('exponentialLambda').value);
+            const x = parseFloat(document.getElementById('exponentialX').value);
+
+            if (isNaN(lambda) || isNaN(x) || lambda <= 0 || x < 0) {
+                document.getElementById('exponentialResults').innerHTML = '<div class="alert alert-danger mt-3">الرجاء إدخال قيم صالحة.</div>';
+                return;
+            }
+
+            const cdf = 1 - math.exp(-lambda * x);
+            const pdf = lambda * math.exp(-lambda * x);
+
+            const resultsHtml = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="result-box text-center">
+                            <p class="mb-0"><strong>احتمال التوزيع التراكمي (CDF):</strong></p>
+                            <p class="mb-0 fs-4">${cdf.toFixed(4)}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="result-box text-center">
+                            <p class="mb-0"><strong>دالة الكثافة الاحتمالية (PDF):</strong></p>
+                            <p class="mb-0 fs-4">${pdf.toFixed(4)}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('exponentialResults').innerHTML = resultsHtml;
+
+            updateExponentialChart(exponentialChart, lambda);
+        }
+
+        // دالة توليد بيانات عشوائية لمقاييس النزعة المركزية
+        function generateRandomData() {
+            const data = Array.from({ length: 10 }, () => Math.floor(Math.random() * 50) + 10).join(', ');
+            document.getElementById('dataInput').value = data;
+            calculateCentralTendency();
+        }
+
+        // دالة توليد بيانات عشوائية لمقاييس التشتت
+        function generateRandomDispersionData() {
+            const data = Array.from({ length: 10 }, () => Math.floor(Math.random() * 50) + 10).join(', ');
+            document.getElementById('dispersionData').value = data;
+            calculateDispersion();
+        }
+
+        // دالة توليد بيانات عشوائية للتكرار النسبي
+        function generateRandomFreqData() {
+            const data = Array.from({ length: 15 }, () => Math.floor(Math.random() * 5) + 1).join(', ');
+            document.getElementById('freqData').value = data;
+            calculateRelativeFrequency();
+        }
+
+        // دالة توليد بيانات عشوائية للبيانات الكمية والنوعية
+        function generateRandomDataType() {
+            const quant = Array.from({ length: 5 }, () => (Math.random() * 100).toFixed(2));
+            const qual = Array.from({ length: 5 }, () => Math.random() > 0.5 ? 'ذكر' : 'أنثى');
+            const data = [...quant, ...qual].sort(() => 0.5 - Math.random()).join(', ');
+            document.getElementById('dataTypeInput').value = data;
+            analyzeDataType();
+        }
+
+        // دالة توليد بيانات عشوائية للعينة
+        function generateRandomSampling() {
+            const N = Math.floor(Math.random() * 1000) + 500;
+            const n = Math.floor(Math.random() * (N / 10)) + 50;
+            document.getElementById('populationSize').value = N;
+            document.getElementById('sampleSize').value = n;
+            calculateSampleSize();
+        }
+
+        // دالة توليد بيانات عشوائية للمعلمة والإحصائية
+        function generateRandomParamStat() {
+            const population = Array.from({ length: 20 }, () => Math.floor(Math.random() * 100)).join(', ');
+            const sample = Array.from({ length: 5 }, () => Math.floor(Math.random() * 100)).join(', ');
+            document.getElementById('populationData').value = population;
+            document.getElementById('sampleData').value = sample;
+            calculateParamStat();
+        }
+
+        // دالة لتوليد بيانات عشوائية للتوزيع المنفصل
+        function generateRandomDiscreteData() {
+            const data = Array.from({ length: 20 }, () => Math.floor(Math.random() * 5)).join(', ');
+            document.getElementById('discreteData').value = data;
+            calculateDiscreteDist();
+        }
+
+        // دالة لتوليد بيانات عشوائية للتوزيع المتصل
+        function generateRandomContinuousData() {
+            const data = Array.from({ length: 20 }, () => (Math.random() * 10 + 1).toFixed(2)).join(', ');
+            document.getElementById('continuousData').value = data;
+            calculateContinuousDist();
+        }
+
+        // دالة لتوليد مثال عشوائي للتوزيع البرنولي
+        function generateRandomBernoulli() {
+            const p = (Math.random()).toFixed(2);
+            document.getElementById('bernoulliP').value = p;
+            calculateBernoulli();
+        }
+
+        // دالة لتوليد مثال عشوائي لتوزيع بواسون
+        function generateRandomPoisson() {
+            const lambda = (Math.random() * 5 + 1).toFixed(2);
+            document.getElementById('poissonLambda').value = lambda;
+            calculatePoisson();
+        }
+
+        // دالة لتوليد مثال عشوائي للتوزيع الطبيعي
+        function generateRandomNormal() {
+            const mu = (Math.random() * 10).toFixed(2);
+            const sigma = (Math.random() * 2 + 0.5).toFixed(2);
+            const x = (Math.random() * 10).toFixed(2);
+            document.getElementById('normalMu').value = mu;
+            document.getElementById('normalSigma').value = sigma;
+            document.getElementById('normalX').value = x;
+            calculateNormal();
+        }
+
+        // دالة لتوليد مثال عشوائي للتوزيع الثنائي
+        function generateRandomBinomial() {
+            const n = Math.floor(Math.random() * 20) + 5;
+            const p = (Math.random()).toFixed(2);
+            const k = Math.floor(Math.random() * (n + 1));
+            document.getElementById('binomialN').value = n;
+            document.getElementById('binomialP').value = p;
+            document.getElementById('binomialK').value = k;
+            calculateBinomial();
+        }
+
+        // دالة لتوليد مثال عشوائي للتوزيع الأسي
+        function generateRandomExponential() {
+            const lambda = (Math.random() * 1 + 0.1).toFixed(2);
+            const x = (Math.random() * 5).toFixed(2);
+            document.getElementById('exponentialLambda').value = lambda;
+            document.getElementById('exponentialX').value = x;
+            calculateExponential();
+        }
+
+        // إعداد الرسوم البيانية
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'القيم'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'البيانات'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        };
+
+        const centralChartCtx = document.getElementById('centralChart').getContext('2d');
+        const centralChart = new Chart(centralChartCtx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'البيانات',
+                    data: [],
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: chartOptions
+        });
+        
+        const dispersionChartCtx = document.getElementById('dispersionChart').getContext('2d');
+        const dispersionChart = new Chart(dispersionChartCtx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'البيانات',
+                    data: [],
+                    backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: chartOptions
+        });
+
+        const spearmanChartCtx = document.getElementById('spearmanChart').getContext('2d');
+        const spearmanChart = new Chart(spearmanChartCtx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'علاقة سبيرمان',
+                    data: [],
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'البيانات X'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'البيانات Y'
+                        }
+                    }
+                }
+            }
+        });
+
+        const pearsonChartCtx = document.getElementById('pearsonChart').getContext('2d');
+        const pearsonChart = new Chart(pearsonChartCtx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'علاقة بيرسون',
+                    data: [],
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'البيانات X'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'البيانات Y'
+                        }
+                    }
+                }
+            }
+        });
+
+        const freqChartCtx = document.getElementById('freqChart').getContext('2d');
+        const freqChart = new Chart(freqChartCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'التكرار النسبي التراكمي',
+                    data: [],
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: chartOptions
+        });
+        
+        const dataTypeChartCtx = document.getElementById('dataTypeChart').getContext('2d');
+        const dataTypeChart = new Chart(dataTypeChartCtx, {
+            type: 'pie',
+            data: {
+                labels: ['الكمية', 'النوعية'],
+                datasets: [{
+                    label: 'أنواع البيانات',
+                    data: [0, 0],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const samplingChartCtx = document.getElementById('samplingChart').getContext('2d');
+        const samplingChart = new Chart(samplingChartCtx, {
+            type: 'bar',
+            data: {
+                labels: ['حجم المجتمع', 'حجم العينة'],
+                datasets: [{
+                    label: 'الحجم',
+                    data: [],
+                    backgroundColor: [
+                        'rgba(255, 159, 64, 0.6)',
+                        'rgba(75, 192, 192, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: chartOptions
+        });
+        
+        const paramStatChartCtx = document.getElementById('paramStatChart').getContext('2d');
+        const paramStatChart = new Chart(paramStatChartCtx, {
+            type: 'bar',
+            data: {
+                labels: ['وسط المجتمع', 'وسط العينة'],
+                datasets: [{
+                    label: 'الوسط',
+                    data: [],
+                    backgroundColor: [
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(201, 203, 207, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(201, 203, 207, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: chartOptions
+        });
+
+        const discreteDistChartCtx = document.getElementById('discreteDistChart').getContext('2d');
+        const discreteDistChart = new Chart(discreteDistChartCtx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'الاحتمال',
+                    data: [],
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'الاحتمال'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'القيم'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        const continuousDistChartCtx = document.getElementById('continuousDistChart').getContext('2d');
+        const continuousDistChart = new Chart(continuousDistChartCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'الكثافة',
+                    data: [],
+                    borderColor: 'rgb(255, 99, 132)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'الكثافة'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'القيم'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        const bernoulliChartCtx = document.getElementById('bernoulliChart').getContext('2d');
+        const bernoulliChart = new Chart(bernoulliChartCtx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'الاحتمال',
+                    data: [],
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: chartOptions
+        });
+
+        const poissonChartCtx = document.getElementById('poissonChart').getContext('2d');
+        const poissonChart = new Chart(poissonChartCtx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'الاحتمال',
+                    data: [],
+                    backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: chartOptions
+        });
+
+        const normalChartCtx = document.getElementById('normalChart').getContext('2d');
+        const normalChart = new Chart(normalChartCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'دالة الكثافة الاحتمالية (PDF)',
+                    data: [],
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'القيم'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'الكثافة'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+        
+        const binomialChartCtx = document.getElementById('binomialChart').getContext('2d');
+        const binomialChart = new Chart(binomialChartCtx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'الاحتمال',
+                    data: [],
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: chartOptions
+        });
+
+        const exponentialChartCtx = document.getElementById('exponentialChart').getContext('2d');
+        const exponentialChart = new Chart(exponentialChartCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'دالة الكثافة الاحتمالية (PDF)',
+                    data: [],
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'الوقت (x)'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'الكثافة'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // دوال تحديث الرسوم البيانية
+        function updateCentralChart(chart, data) {
+            const sortedUniqueData = [...new Set(data)].sort((a, b) => a - b);
+            const counts = sortedUniqueData.map(val => data.filter(d => d === val).length);
+            chart.data.labels = sortedUniqueData;
+            chart.data.datasets[0].data = counts;
+            chart.data.datasets[0].label = 'تكرار البيانات';
+            chart.update();
+        }
+
+        function updateDispersionChart(chart, data) {
+            const sortedData = data.slice().sort((a, b) => a - b);
+            const labels = sortedData.map(d => d.toFixed(2));
+            const mean = math.mean(data);
+            const meanLine = new Array(labels.length).fill(mean);
+            
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = sortedData;
+            chart.data.datasets[0].label = 'البيانات';
+            
+            // إضافة خط الوسط كبيانات ثانوية
+            if (chart.data.datasets.length < 2) {
+                 chart.data.datasets.push({
+                    label: 'الوسط الحسابي',
+                    data: meanLine,
+                    type: 'line',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2,
+                    pointRadius: 0
+                });
+            } else {
+                 chart.data.datasets[1].data = meanLine;
+            }
+            chart.update();
+        }
+
+        function updateCorrelationChart(chart, xData, yData) {
+            const chartData = xData.map((x, i) => ({ x: x, y: yData[i] }));
+            chart.data.datasets[0].data = chartData;
+            chart.update();
+        }
+
+        function updateFreqChart(chart, labels, data) {
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = data;
+            chart.update();
+        }
+        
+        function updateDataTypeChart(chart, quant, qual) {
+            chart.data.datasets[0].data = [quant, qual];
+            chart.update();
+        }
+        
+        function updateSamplingChart(chart, N, n) {
+            chart.data.datasets[0].data = [N, n];
+            chart.update();
+        }
+        
+        function updateParamStatChart(chart, popMean, sampleMean) {
+            chart.data.datasets[0].data = [popMean, sampleMean];
+            chart.update();
+        }
+
+        function updateBarChart(chart, labels, data) {
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = data;
+            chart.data.datasets[0].label = 'الاحتمال';
+            chart.update();
+        }
+        
+        function updateDensityChart(chart, data) {
+            const min = math.min(data);
+            const max = math.max(data);
+            const step = (max - min) / 50;
+            const labels = [];
+            const pdfData = [];
+
+            for (let i = min; i <= max; i += step) {
+                const x = i;
+                const pdfValue = calculateKernelDensity(data, x);
+                labels.push(x.toFixed(2));
+                pdfData.push(pdfValue);
+            }
+            
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = pdfData;
+            chart.data.datasets[0].label = 'دالة الكثافة الاحتمالية (PDF)';
+            chart.update();
+        }
+
+        // دالة مساعدة لحساب كثافة النواة (Kernel Density Estimation)
+        function calculateKernelDensity(data, x) {
+            const n = data.length;
+            const h = math.std(data) * math.pow(n, -0.2); // قاعدة اختيار العرض
+            let sum = 0;
+            data.forEach(xi => {
+                sum += (1 / math.sqrt(2 * math.PI)) * math.exp(-0.5 * math.pow((x - xi) / h, 2));
+            });
+            return sum / (n * h);
+        }
+
+        function updateBinomialChart(chart, n, p) {
+            const labels = [];
+            const data = [];
+            for (let k = 0; k <= n; k++) {
+                labels.push(k);
+                const probability = math.combinations(n, k) * math.pow(p, k) * math.pow(1 - p, n - k);
+                data.push(probability);
+            }
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = data;
+            chart.update();
+        }
+
+        function updatePoissonChart(chart, lambda) {
+            const labels = [];
+            const data = [];
+            const maxK = math.floor(lambda + 4 * math.sqrt(lambda));
+            for (let k = 0; k <= maxK; k++) {
+                labels.push(k);
+                const probability = (math.pow(lambda, k) * math.exp(-lambda)) / math.factorial(k);
+                data.push(probability);
+            }
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = data;
+            chart.update();
+        }
+
+        function updateNormalChart(chart, mu, sigma) {
+            const labels = [];
+            const data = [];
+            const minX = mu - 4 * sigma;
+            const maxX = mu + 4 * sigma;
+            const step = (maxX - minX) / 100;
+            let currentX = minX;
+
+            while (currentX <= maxX) {
+                labels.push(currentX.toFixed(2));
+                const pdfValue = (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(-Math.pow(currentX - mu, 2) / (2 * Math.pow(sigma, 2)));
+                data.push(pdfValue);
+                currentX += step;
+            }
+
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = data;
+            chart.update();
+        }
+
+        function updateExponentialChart(chart, lambda) {
+            const labels = [];
+            const data = [];
+            const maxX = 10 / lambda;
+            const step = maxX / 50;
+            let currentX = 0;
+
+            while (currentX <= maxX) {
+                labels.push(currentX.toFixed(2));
+                const pdfValue = lambda * Math.exp(-lambda * currentX);
+                data.push(pdfValue);
+                currentX += step;
+            }
+
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = data;
+            chart.update();
+        }
+
+        // تشغيل الدوال الابتدائية
+        document.addEventListener('DOMContentLoaded', () => {
+            calculateCentralTendency();
+            calculateDispersion();
+            calculateRelativeFrequency();
+            analyzeDataType();
+            calculateSampleSize();
+            calculateParamStat();
+            calculateDiscreteDist();
+            calculateContinuousDist();
+            calculateBernoulli();
+            calculatePoisson();
+            calculateNormal();
+            calculateBinomial();
+            calculateExponential();
+            calculateSpearman();
+            calculatePearson();
+        });
+    </script>
+</body>
+</html>
