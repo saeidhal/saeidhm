@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة إحصائية - سوريا 2010-2015</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: #333;
+            direction: rtl;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        h1 {
+            color: #1e3c72;
+            margin: 0;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .subtitle {
+            color: #2a5298;
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #1e3c72;
+        }
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: #1e3c72;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            color: white;
+            font-size: 24px;
+        }
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e3c72;
+            margin: 0;
+        }
+        .stat {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-right: 4px solid #2a5298;
+        }
+        .stat-year {
+            font-weight: bold;
+            color: #1e3c72;
+            font-size: 1.1rem;
+        }
+        .stat-value {
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+        .trend {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        .up {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .down {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .chart-container {
+            height: 200px;
+            margin-top: 20px;
+            position: relative;
+        }
+        .chart-bar {
+            position: absolute;
+            bottom: 0;
+            width: 15%;
+            background: linear-gradient(to top, #1e3c72, #2a5298);
+            border-radius: 5px 5px 0 0;
+            transition: height 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 5px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>لوحة الإحصائيات الاقتصادية لسوريا</h1>
+            <p class="subtitle">تحليل شامل للقطاعات الرئيسية من 2010 إلى 2015</p>
+        </header>
+
+        <div class="dashboard">
+            <!-- الزراعة -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">🌾</div>
+                    <h2 class="card-title">الزراعة</h2>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">2010</div>
+                    <div class="stat-value">الإنتاج: 7.2 مليون طن</div>
+                    <div class="stat-value">المساهمة في الناتج المحلي: 22%</div>
+                    <span class="trend up">↗ زيادة 3% عن 2009</span>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">2012</div>
+                    <div class="stat-value">الإنتاج: 4.8 مليون طن</div>
+                    <div class="stat-value">المساهمة في الناتج المحلي: 17%</div>
+                    <span class="trend down">↘ انخفاض 5% عن 2011</span>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">2015</div>
+                    <div class="stat-value">الإنتاج: 3.1 مليون طن</div>
+                    <div class="stat-value">المساهمة في الناتج المحلي: 14%</div>
+                    <span class="trend down">↘ انخفاض 3% عن 2014</span>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-bar" style="height: 80%; left: 10%;">2010<br>80%</div>
+                    <div class="chart-bar" style="height: 65%; left: 28%;">2011<br>65%</div>
+                    <div class="chart-bar" style="height: 50%; left: 46%;">2012<br>50%</div>
+                    <div class="chart-bar" style="height: 40%; left: 64%;">2013<br>40%</div>
+                    <div class="chart-bar" style="height: 35%; left: 82%;">2015<br>35%</div>
+                </div>
+            </div>
+
+            <!-- الصناعة -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">🏭</div>
+                    <h2 class="card-title">الصناعة</h2>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">2010</div>
+                    <div class="stat-value">الإنتاج الصناعي: 12.5 مليار دولار</div>
+                    <div class="stat-value">عدد المنشآت: 35,000</div>
+                    <span class="trend up">↗ زيادة 5% عن 2009</span>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">2012</div>
+                    <div class="stat-value">الإنتاج الصناعي: 6.8 مليار دولار</div>
+                    <div class="stat-value">عدد المنشآت: 18,500</div>
+                    <span class="trend down">↘ انخفاض 45% عن 2011</span>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">2015</div>
+                    <div class="stat-value">الإنتاج الصناعي: 3.2 مليار دولار</div>
+                    <div class="stat-value">عدد المنشآت: 9,200</div>
+                    <span class="trend down">↘ انخفاض 30% عن 2014</span>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-bar" style="height: 90%; left: 10%;">2010<br>90%</div>
+                    <div class="chart-bar" style="height: 75%; left: 28%;">2011<br>75%</div>
+                    <div class="chart-bar" style="height: 45%; left: 46%;">2012<br>45%</div>
+                    <div class="chart-bar" style="height: 30%; left: 64%;">2013<br>30%</div>
+                    <div class="chart-bar" style="height: 20%; left: 82%;">2015<br>20%</div>
+                </div>
+            </div>
+
+            <!-- التجارة -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">💰</div>
+                    <h2 class="card-title">التجارة</h2>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">2010</div>
+                    <div class="stat-value">الصادرات: 10.8 مليار دولار</div>
+                    <div class="stat-value">الواردات: 14.2 مليار دولار</div>
+                    <span class="trend up">↗ فائض تجاري نسبي</span>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">2012</div>
+                    <div class="stat-value">الصادرات: 4.3 مليار دولار</div>
+                    <div class="stat-value">الواردات: 8.7 مليار دولار</div>
+                    <span class="trend down">↘ عجز تجاري متزايد</span>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">2015</div>
+                    <div class="stat-value">الصادرات: 1.9 مليار دولار</div>
+                    <div class="stat-value">الواردات: 5.1 مليار دولار</div>
+                    <span class="trend down">↘ عجز تجاري حاد</span>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-bar" style="height: 85%; left: 10%;">2010<br>85%</div>
+                    <div class="chart-bar" style="height: 70%; left: 28%;">2011<br>70%</div>
+                    <div class="chart-bar" style="height: 40%; left: 46%;">2012<br>40%</div>
+                    <div class="chart-bar" style="height: 25%; left: 64%;">2013<br>25%</div>
+                    <div class="chart-bar" style="height: 15%; left: 82%;">2015<br>15%</div>
+                </div>
+            </div>
+
+            <!-- النفط -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">🛢️</div>
+                    <h2 class="card-title">النفط</h2>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">2010</div>
+                    <div class="stat-value">الإنتاج: 380,000 برميل/يوم</div>
+                    <div class="stat-value">الإيرادات: 3.5 مليار دولار</div>
+                    <span class="trend up">↗ إنتاج مستقر</span>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">2012</div>
+                    <div class="stat-value">الإنتاج: 120,000 برميل/يوم</div>
+                    <div class="stat-value">الإيرادات: 1.1 مليار دولار</div>
+                    <span class="trend down">↘ انخفاض 68%</span>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">2015</div>
+                    <div class="stat-value">الإنتاج: 35,000 برميل/يوم</div>
+                    <div class="stat-value">الإيرادات: 0.3 مليار دولار</div>
+                    <span class="trend down">↘ انخفاض حاد</span>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-bar" style="height: 95%; left: 10%;">2010<br>95%</div>
+                    <div class="chart-bar" style="height: 80%; left: 28%;">2011<br>80%</div>
+                    <div class="chart-bar" style="height: 35%; left: 46%;">2012<br>35%</div>
+                    <div class="chart-bar" style="height: 20%; left: 64%;">2013<br>20%</div>
+                    <div class="chart-bar" style="height: 10%; left: 82%;">2015<br>10%</div>
+                </div>
+            </div>
+
+            <!-- البنية التحتية -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">🏗️</div>
+                    <h2 class="card-title">البنية التحتية</h2>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">2010</div>
+                    <div class="stat-value">ميزانية التطوير: 2.8 مليار دولار</div>
+                    <div class="stat-value">مشاريع قيد التنفيذ: 120</div>
+                    <span class="trend up">↗ تطور ملحوظ</span>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">2012</div>
+                    <div class="stat-value">ميزانية التطوير: 0.9 مليار دولار</div>
+                    <div class="stat-value">مشاريع قيد التنفيذ: 45</div>
+                    <span class="trend down">↘ انخفاض 60%</span>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">2015</div>
+                    <div class="stat-value">ميزانية التطوير: 0.4 مليار دولار</div>
+                    <div class="stat-value">مشاريع قيد التنفيذ: 18</div>
+                    <span class="trend down">↘ تدهور كبير</span>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-bar" style="height: 88%; left: 10%;">2010<br>88%</div>
+                    <div class="chart-bar" style="height: 72%; left: 28%;">2011<br>72%</div>
+                    <div class="chart-bar" style="height: 38%; left: 46%;">2012<br>38%</div>
+                    <div class="chart-bar" style="height: 22%; left: 64%;">2013<br>22%</div>
+                    <div class="chart-bar" style="height: 12%; left: 82%;">2015<br>12%</div>
+                </div>
+            </div>
+
+            <!-- ملخص عام -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">📊</div>
+                    <h2 class="card-title">ملخص عام</h2>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">الناتج المحلي الإجمالي</div>
+                    <div class="stat-value">2010: 60 مليار دولار</div>
+                    <div class="stat-value">2015: 15 مليار دولار</div>
+                    <span class="trend down">↘ انخفاض 75%</span>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">التضخم</div>
+                    <div class="stat-value">2010: 4.5%</div>
+                    <div class="stat-value">2015: 120%</div>
+                    <span class="trend down">↘ تضخم مفرط</span>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">البطالة</div>
+                    <div class="stat-value">2010: 8.5%</div>
+                    <div class="stat-value">2015: 55%</div>
+                    <span class="trend down">↘ ارتفاع حاد</span>
+                </div>
+                <div class="stat">
+                    <div class="stat-year">الاستثمار الأجنبي</div>
+                    <div class="stat-value">2010: 1.2 مليار دولار</div>
+                    <div class="stat-value">2015: 0.05 مليار دولار</div>
+                    <span class="trend down">↘ شبه متوقف</span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>جميع الأرقام تقريبية وتستند إلى تقديرات اقتصادية للفترة 2010-2015</p>
+            <p>تم إعداد هذه اللوحة لأغراض تعليمية وتحليلية</p>
+        </footer>
+    </div>
+
+    <script>
+        // Simple animation for chart bars on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                const bars = document.querySelectorAll('.chart-bar');
+                bars.forEach(bar => {
+                    const finalHeight = bar.style.height;
+                    bar.style.height = '0%';
+                    setTimeout(() => {
+                        bar.style.height = finalHeight;
+                    }, 100);
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>
